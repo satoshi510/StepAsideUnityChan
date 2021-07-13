@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UnityChanController : MonoBehaviour
 {
@@ -20,6 +21,12 @@ public class UnityChanController : MonoBehaviour
     private float coefficient = 0.99f;
     //ゲーム終了の判定
     private bool isEnd = false;
+    //ゲーム終了時に表示するテキスト
+    private GameObject stateText;
+    //スコアを表示するテキスト
+    private GameObject scoreText;
+    //得点
+    private int score = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +39,12 @@ public class UnityChanController : MonoBehaviour
 
         //Rigidbodyコンポーネントを取得
         this.myRigidbody = GetComponent<Rigidbody>();
+
+        //シーン中のstateTextオブジェクトを取得
+        this.stateText = GameObject.Find("GameResultText");
+
+        //シーン中のscoreTextオブジェクトを取得
+        this.scoreText = GameObject.Find("ScoreText");
         
     }
 
@@ -95,17 +108,26 @@ public class UnityChanController : MonoBehaviour
         if (other.gameObject.tag == "CarTag" || other.gameObject.tag == "TrafficConeTag")
         {
             this.isEnd = true;
+            //stateTextにGAME OVERを表示
+            this.stateText.GetComponent<Text>().text = "GAME OVER";
         }
 
         //ゴール地点に到着した場合
         if (other.gameObject.tag == "GoalTag")
         {
             this.isEnd = true;
+            //stateTextにGAMECLEARを表示
+            this.stateText.GetComponent<Text>().text = "CLEAR!!";
         }
 
         //コインに衝突した場合
         if (other.gameObject.tag == "CoinTag")
         {
+            //スコアを加算
+            this.score += 10;
+
+            //scoreText獲得した点数を表示
+            this.scoreText.GetComponent<Text>().text = "Score " + this.score + "pt";
             //パーティクルを再生
             GetComponent<ParticleSystem>().Play();
 
