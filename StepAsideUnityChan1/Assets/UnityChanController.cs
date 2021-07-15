@@ -170,4 +170,17 @@ public class UnityChanController : MonoBehaviour
     {
         this.isRButtonDown = false;
     }
+
+    void A()
+    {
+        if (this.gameObject.transform.position.z -1 > 2)
+        {
+            if(gameObject.tag == "CoinTag")
+            {
+                Destroy(gameObject);
+            }
+
+        }
+    }
+
 }
